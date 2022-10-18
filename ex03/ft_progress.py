@@ -3,6 +3,7 @@ import time
 
 
 def ft_progress(lst):
+    print("\x1b[?25l") # hide cursor
     i = 1
     start = time.time()
     while i <= len(lst):
@@ -49,4 +50,4 @@ def ft_progress(lst):
         label = f"{label} {tops:05.2f}s    "
         print(f"{label}", end='\r', flush=True)
         i += 1
-    print("")
+    print("\x1b[?25h") #show cursor
