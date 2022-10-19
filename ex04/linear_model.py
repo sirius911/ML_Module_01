@@ -1,4 +1,5 @@
-from cProfile import label
+# from cProfile import label
+import math
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -24,7 +25,10 @@ elif theta_hypot[0][0] < 0:
 label += f"{theta_hypot[0][0]} \tMSE = {mse_before_fit}"
 print(label)
 
-linear_model1.fit_(Xpill, Yscore)
+# fit
+# linear_model1.fit_(Xpill, Yscore)
+
+
 predictions = linear_model1.predict_(Xpill)
 mse_after_fit = MyLR.mse_(Yscore, predictions)
 
@@ -48,4 +52,25 @@ plt.ylabel("Space driving score")
 plt.legend(bbox_to_anchor=(0.0, 1.0), loc="lower left", frameon=False, ncol=2)
 plt.tight_layout()
 plt.grid(True)
+plt.show()
+
+for theta0 in np.arange(80,100,4):
+    x = np.arange(-14, -3, 0.1)
+    y = []
+    for x_ in x:
+        t1 = x_
+        t0 = theta0
+        linear_model1.thetas= np.array([t0, t1]).reshape((-1, 1))
+        y_hat = linear_model1.predict_(Xpill)
+        y.append(linear_model1.loss_(Yscore, y_hat))
+    label="$J(\\theta_0="
+    label += str(round(theta0,2))
+    label += ",\\theta_1)$"
+    plt.plot(x, y, label=label)
+
+plt.xlabel("$\\theta_1$")
+plt.ylabel("cost function $J(\\theta_0,\\theta_1)$")
+plt.ylim([10, 140])
+plt.grid(True)
+plt.legend(frameon=False)
 plt.show()

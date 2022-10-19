@@ -131,7 +131,9 @@ class MyLinearRegression():
             return self.loss_elem_(y, y_hat).sum() / (2 * len(y))
         except Exception:
             return None
-
+#****************************************************************
+# Class' Methods
+#****************************************************************
     def mse_(y, y_hat):
         """
         Description:
