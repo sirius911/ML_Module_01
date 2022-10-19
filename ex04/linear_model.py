@@ -9,14 +9,12 @@ from mylinearregression import MyLinearRegression as MyLR
 data = pd.read_csv("are_blue_pills_magics.csv")
 Xpill = np.array(data['Micrograms']).reshape(-1,1)
 Yscore = np.array(data['Score']).reshape(-1,1)
-
-# print(Xpill)
-# print(Yscore)
 theta_hypot = np.array([[89.0], [-8.0]])
+
 linear_model1 = MyLR(theta_hypot, 5e-8, 1500000, progress_bar=True)
 mse_before_fit = MyLR.mse_(Yscore, linear_model1.predict_(Xpill))
 predictions = linear_model1.predict_(Xpill)
-plt.plot(Xpill, predictions, 'r--', label="before fit_()")
+# plt.plot(Xpill, predictions, 'r--', label="before fit_()")
 label = f"hypothesis with f(x) = {theta_hypot[1][0]}x"
 if theta_hypot[0][0] > 0:
     label += ' + '
@@ -26,7 +24,7 @@ label += f"{theta_hypot[0][0]} \tMSE = {mse_before_fit}"
 print(label)
 
 # fit
-# linear_model1.fit_(Xpill, Yscore)
+linear_model1.fit_(Xpill, Yscore)
 
 
 predictions = linear_model1.predict_(Xpill)
@@ -54,7 +52,9 @@ plt.tight_layout()
 plt.grid(True)
 plt.show()
 
-for theta0 in np.arange(80,100,4):
+min = linear_model1.thetas[0][0] - 10.0
+max = linear_model1.thetas[0][0] + 10.0
+for theta0 in np.linspace(min,max,5, endpoint=False):
     x = np.arange(-14, -3, 0.1)
     y = []
     for x_ in x:
