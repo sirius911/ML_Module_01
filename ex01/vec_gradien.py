@@ -1,5 +1,4 @@
 import numpy as np
-from prediction import predict_
 
 
 def simple_gradient(x, y, theta):
@@ -27,8 +26,11 @@ def simple_gradient(x, y, theta):
         return None
     if x.shape != y.shape:
         return None
-
-    m = len(x)
-    h = predict_(x, theta=theta)
-    diff = h - y
-    return np.array([[diff.sum() / m], [(diff * x).sum() / m]])
+    try:
+        m = len(x)
+        x_1 = np.c_[np.ones(x.shape[0]), x]
+        h =  x_1.dot(theta)
+        diff = h - y
+        return np.array([[diff.sum() / m], [(diff * x).sum() / m]])
+    except Exception:
+        return None

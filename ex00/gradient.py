@@ -1,5 +1,4 @@
 import numpy as np
-from prediction import predict_
 
 
 def simple_gradient(x, y, theta):
@@ -27,16 +26,19 @@ def simple_gradient(x, y, theta):
         return None
     if x.shape != y.shape:
         return None
-
-    m = len(x)
-    h = predict_(x, theta=theta)
-    diff = np.zeros((m, 1), dtype=np.float64)
-    for idx,( h_, y_) in enumerate(zip(h, y)):
-        diff[idx] = (h_ - y_)
-    som_diff = 0
-    for elem in diff:
-        som_diff += elem
-    som_diff2 = 0
-    for idx, elem in enumerate(diff):
-        som_diff2 += elem * x[idx]
-    return np.array([som_diff / m, som_diff2 / m])
+    try:
+        m = len(x)
+        x_1 = np.c_[np.ones(x.shape[0]), x]
+        h =  x_1.dot(theta)
+        diff = np.zeros((m, 1), dtype=np.float64)
+        for idx,( h_, y_) in enumerate(zip(h, y)):
+            diff[idx] = (h_ - y_)
+        som_diff = 0
+        for elem in diff:
+            som_diff += elem
+        som_diff2 = 0
+        for idx, elem in enumerate(diff):
+            som_diff2 += elem * x[idx]
+        return np.array([som_diff / m, som_diff2 / m])
+    except Exception:
+        return None

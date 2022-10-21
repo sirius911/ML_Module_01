@@ -4,6 +4,7 @@ from re import I
 import time
 
 def ft_progress(lst):
+    print("\x1b[?25l") # hide cursor
     i = 1
     start = time.time()
     while i <= len(lst):
@@ -50,7 +51,7 @@ def ft_progress(lst):
         label = f"{label} {tops:05.2f}s    "
         print(f"{label}", end='\r', flush=True)
         i += 1
-    print("")
+    print("\x1b[?25h") #show cursor
 
 def predict_(x, theta):
     """Computes the vector of prediction y_hat from two non-empty numpy.array.
@@ -77,6 +78,7 @@ def predict_(x, theta):
 
     x_1 = np.c_[np.ones(x.shape[0]), x]
     return x_1.dot(theta)
+
 
 def simple_gradient(x, y, theta):
     """Computes a gradient vector from three non-empty numpy.array, with a for-loop.
@@ -105,7 +107,8 @@ def simple_gradient(x, y, theta):
         return None
 
     m = len(x)
-    h = predict_(x, theta=theta)
+    x_1 = np.c_[np.ones(x.shape[0]), x]
+    h =  x_1.dot(theta)
     diff = h - y
     return np.array([[diff.sum() / m], [(diff * x).sum() / m]])
 
@@ -139,13 +142,9 @@ def fit_(x, y, theta, alpha, max_iter):
     new_theta = theta.copy()
     for i in ft_progress(range(max_iter)):
         gradien = simple_gradient(x,y,new_theta)
-        # print(f"{gradien[0]} * {float} = {float(alpha * gradien[0])} --> {gradien[0] - float(alpha * gradien[0])}")
         t0 = new_theta[0][0]
         t1 = new_theta[1][0]
-        # print(f"T0 = {t0}\tT1 = {t1}",end=" ---> Gradien --->")
         t0 -= (alpha * gradien[0][0])
         t1 -= (alpha * gradien[1][0])
-        # print(f"T0 = {t0}\tT1 = {t1}")
         new_theta= np.array([t0, t1]).reshape((-1, 1))
-        # print(new_theta)
     return(new_theta)
